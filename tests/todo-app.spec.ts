@@ -1,39 +1,36 @@
 import { test, expect } from '@playwright/test';
-
+import { TodoPage } from '../pages/TodoPage';
 test.describe('TodoMVC Application Tests', () => {
+  let todoPage:TodoPage;
   test.beforeEach(async ({ page }) => {
+
+    todoPage=new TodoPage(page);
     // Navigate to the demo app before each test
-    await page.goto('https://demo.playwright.dev/todomvc');
+    await todoPage.goto();
   });
 
   test('should allow adding new todo items', async ({ page }) => {
-    const newTodoInput = page.getByPlaceholder('What needs to be done?');
+    const newTodoInput = todoPage.newTodoInput;
 
     // Add first todo item
-    await newTodoInput.fill('Learn Playwright with TypeScript');
-    await newTodoInput.press('Enter');
-
-    // Add second todo item
-    await newTodoInput.fill('Integrate AI into test framework');
-    await newTodoInput.press('Enter');
+    const string1='Learn Playwright with TypeScript'
+    await todoPage.addTo(string1);
+        // Add second todo item
+    await todoPage.addTo('Integrate AI into test framework');
 
     // Verify both items were added to the list
-    const todoList = page.getByTestId('todo-title');
-    await expect(todoList).toHaveCount(2);
-    await expect(todoList.first()).toHaveText('Learn Playwright with TypeScript');
+    await todoPage.listVerification(string1);
+    
   });
 
   test('should mark an item as completed', async ({ page }) => {
-    const newTodoInput = page.getByPlaceholder('What needs to be done?');
+    await todoPage.addTo('Build production framework');
 
-    await newTodoInput.fill('Build production framework');
-    await newTodoInput.press('Enter');
 
     // Click the checkbox next to the item
-    const todoItem = page.getByTestId('todo-item');
-    await todoItem.getByRole('checkbox').check();
+    await todoPage.selectCheckbox('Learn Playwright with TypeScript');
 
     // Verify item is marked as completed
-    await expect(todoItem).toHaveClass(/completed/);
+    await todoPage.completedStatusCheck();
   });
 });
