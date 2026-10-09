@@ -24,8 +24,7 @@ test.describe('Playwright locators&web assertion practice',()=>{
        const targetcheckbox= await todopage.selectCheckbox(data.item1);
     //verify only the selected item checked
     await expect(targetcheckbox).toBeChecked();
-    await page.screenshot({ path: 'screenshot.png', fullPage: true });
-
+    
     //'All' link verification
     await todopage.allLinkVerification(data.item1,data.item2);
     
