@@ -66,7 +66,7 @@ async completedLinkVerification(text1:string,text2:string)
 {
     await this.completedHref.click();
     await this.page.screenshot({ path: 'screenshotcompleted.png', fullPage: true });
-await expect( this.todoItems.filter({hasText:text1})).toBeVisible;
+    await expect( this.todoItems.filter({hasText:text1})).toBeVisible;
    await expect(this.todoItems.filter({hasText:text2})).toBeHidden;
 
 }
